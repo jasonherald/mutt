@@ -1,0 +1,84 @@
+set mbox_type   = Maildir
+set sendmail    = /usr/local/bin/msmtp
+
+set realname = "Xx Xxx" 
+
+set folder = "~/.mail/gmail"
+set spoolfile = "+INBOX"
+set record="+sent"
+set postponed="+drafts"
+set mbox="+INBOX"
+set trash="+trash"
+mailboxes +INBOX
+set mail_check = '30'
+set timeout = '15'
+set check_new = yes
+set envelope_from = yes
+set header_cache=~/.mutt/cache/headers
+set message_cachedir=~/.mutt/cache/bodies
+set certificate_file=~/.mutt/certificates
+set fast_reply      # do not ask for to, sbuject,.. when replying
+set include         # quote msg when replying
+set reply_to        # use adress from reply-to header when replyingset auto_tag        # if something is tagged run commands on all tagged msgs
+set delete_untag = yes    # untag msgs when marking them for deletion
+set mark_old = no   # don't differentiate between new and old
+set forward_format="Fwd: %s"
+unset confirmappend 
+set delete_untag=yes
+set delete=yes
+set mime_forward=yes
+set mime_forward_rest=yes
+set auto_tag = yes
+set followup_to=yes
+set allow_ansi
+auto_view image/*
+
+set index_format="%4C %Z %{%b %d} %-15.15L %?M?(#%03M)&(%4l)? %?y?(%.20Y) ?%s"
+
+set move = no
+set mark_old = no
+set beep_new=yes
+
+set sort=threads
+set sort_browser=reverse-date
+set sort_aux=reverse-last-date-received
+set sig_dashes = no
+set pager_stop = yes
+
+ignore "Authentication-Results:"
+ignore "DomainKey-Signature:"
+ignore "DKIM-Signature:"
+hdr_order Date From To Cc
+
+alternates "(x\.x@gmail\.com)|(y\.y@y\.com)|(z@z\.z\.edu)|(xx@xx\.com)"
+set use_from = yes
+set user_agent = yes
+macro index \e1 ":set from=xx@gmail.com\n:set status_format=\"-%r-xx@gmail.com: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---\"\n" "Switch to xx@gmail.com"
+macro index \e2 ":set from=xx@xx.org\n:set status_format=\"-%r-xx@xx.com: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---\"\n" "Switch to xx@xx.com"
+
+macro index \e3 ":set from=x@x.x.x\n:set status_format=\"-%r-x@x.x.x: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---\"\n" "Switch to x@x.x.x"
+macro index \e4 ":set from=z@z.com\n:set status_format=\"-%r-z@z.com: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---\"\n" "Switch to z@z.com"
+
+set signature="~/.signature"
+set sig_on_top = yes
+
+set editor="vim '+/^'"
+
+macro index,pager y "<enter-command>unset trash<enter><delete-message><sync-mailbox>" "Gmail archive message"
+macro index,pager d "<delete-message>" "Trash Message"
+macro index,pager ,t "<save-message>=Tasks.To-Do<enter><sync-mailbox>" "move to todo"
+macro index,pager ,d "<save-message>=Tasks.Done<enter><sync-mailbox>" "move to done"
+macro index,pager xt "<change-folder>=Tasks.To-Do<enter>" "goto todo list"
+macro index,pager xi "<change-folder>=INBOX<enter>" "go to inbox"
+macro index,pager xd "<change-folder>=Tasks.Done<enter>" "go to done"
+
+auto_view text/html
+
+set query_command="goobook query '%s'"
+macro index,pager ac "<pipe-message>goobook add<return>" "add sender to google contacts"
+bind editor <Tab> complete-query
+bind index g "group-reply"
+
+source ~/.mutt/themes/mutt-colors-solarized/mutt-colors-solarized-dark-16.muttrc
+
+macro index,pager ,m <shell-escape>~/.scripts/msearch<enter><change-folder>+search<enter> "mairix query"

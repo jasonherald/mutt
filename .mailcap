@@ -1,0 +1,5 @@
+text/html; elinks -dump -default-mime-type text/html %s; needsterminal; copiousoutput;
+
+image/*; img2txt -d fstein -W 100 %s; copiousoutput;
+
+application/pdf; ~/.scripts/view_attachment.sh %s pdf

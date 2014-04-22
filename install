@@ -1,0 +1,4 @@
+brew install mutt --with-s-lang --with-trash-patch --with-confirm-attachment-patch
+brew install offlineimap msmtp elinks googlecl goobook
+
+then setup the cron

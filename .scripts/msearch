@@ -1,0 +1,16 @@
+#!/bin/sh
+thread=
+append=
+YORN ()
+{
+	printf "$1 (yes/[no]) "
+	read -e yorn
+	case "$yorn" in
+		y*|Y*) return 0;;
+		*) return 1;;
+	esac
+}
+printf "Enter mairix query:\n"
+read -e query
+[ -n "$query" ] || exit 0
+mairix "$query"

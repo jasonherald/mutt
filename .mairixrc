@@ -1,0 +1,5 @@
+base=~/.mail/gmail
+maildir=*
+database=~/.mail/mairix_database
+mfolder=search
+omit=search

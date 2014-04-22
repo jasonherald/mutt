@@ -1,0 +1,39 @@
+[general]
+accounts = Gmail
+
+[Account Gmail]
+localrepository = Gmail-Local
+remoterepository = Gmail-Remote
+status_backend = sqlite
+footer = "\n"
+
+[Repository Gmail-Local]
+type = Maildir
+localfolders = ~/.mail/gmail
+
+nametrans = lambda folder: re.sub('spam', '[Gmail].Spam',
+                           re.sub('drafts', '[Gmail].Drafts',
+                           re.sub('sent', '[Gmail].Sent Mail',
+                           re.sub('flagged', '[Gmail].Starred',
+                           re.sub('trash', '[Gmail].Trash',
+                           re.sub('important', '[Gmail].Important',
+                           re.sub('archive', '[Gmail].All Mail', folder)))))))
+
+folderfilter = lambda foldername: foldername not in ['search']
+
+[Repository Gmail-Remote]
+type = Gmail
+remoteuser = xxx@gmail.com
+remotepass = xxxxxxx
+realdelete = no
+maxconnections = 2
+ssl = yes
+cert_fingerprint = 89091347184d41768bfc0da9fad94bfe882dd358
+
+nametrans = lambda folder: re.sub('.*Spam$', 'spam',
+                           re.sub('.*Drafts$', 'drafts',
+                           re.sub('.*Sent Mail$', 'sent',
+                           re.sub('.*Starred$', 'flagged',
+                           re.sub('.*Trash$', 'trash',
+                           re.sub('.*Important$', 'important',
+                           re.sub('.*All Mail$', 'archive', folder)))))))

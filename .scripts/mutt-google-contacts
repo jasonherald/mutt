@@ -1,0 +1,37 @@
+#!/usr/bin/python
+
+import subprocess
+import string
+import sys
+
+if not len(sys.argv) >= 2:
+    print 'Usage: %s querystring' % sys.argv[0]
+    sys.exit(1)
+
+sys.stdout.write('Calling "google contacts list": ')
+
+query = ' '.join(sys.argv[1:])
+args = ['/usr/local/bin/google', 'contacts', 'list', '--title', '(?i).*' + query,
+        '--fields', 'name,email', '--delimiter=;']
+
+google = subprocess.Popen(args, stdout=subprocess.PIPE)
+stdout, stderr = google.communicate()
+
+if google.returncode != 0:
+    print 'error'
+    sys.exit(2)
+
+print 'success'
+
+for line in stdout.split('\n'):
+    if len(line) > 0:
+        name, emails = line.split(';')
+        for email in emails.split(', '):
+            if string.find(email, ' ') != -1:
+                # with two or more addresses there is an additional
+                # type (home, work, ...)
+                typeoraddr, emailaddr = string.split(email, ' ')
+                print emailaddr + '\t' + name + '\t' + typeoraddr
+            else:
+                # with only one address, there is no type field
+                print email + '\t' + name
